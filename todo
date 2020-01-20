@@ -1,8 +1,4 @@
-Créer des utilisateurs !
-
-Le lieu des clients correspond à l'endroit où ils habitent et c'est celui-là qui génère le pseudo
-
-Installer site hors ligne sur pc
+Générer les recettes du jour
 
 Génération de fichier excel pour le palais de la femme (voir fichier excel) + ajouter :
 	- Proportions de catégories d'achat sur le total des clients
@@ -13,5 +9,7 @@ Pour chaque personne : => On veut une liste
 	- Ratio de catégorie d'achat (sur 1 mois/ 2mois/ trimestre/ un an)
 
 Script de backup
+
+Modification/ suppression/ meilleure création d'utilisateurs
 
 Automatisation de création de fichier excel pour la saisie de sortie de caisse

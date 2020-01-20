@@ -2,14 +2,13 @@
 
 require_once('models/autoload.php');
 
-function signin($email, $prenom, $password)
+function signin($prenom, $email, $password)
 {
-	if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+	if (strlen($email) > 4) {
 		if (strlen($password) > 5) {
 			$userManager = new UserManager();
 			if (!$userManager->checkExistingUser($email)) {
 				$affectedLines = $userManager->signin($email, $prenom, $password);
-
 				if ($affectedLines) {
 					login($email, $password);
 				} else {
@@ -19,10 +18,10 @@ function signin($email, $prenom, $password)
 				throw new Exception("Votre email est déjà utilisé par un autre utilisateur !");
 			}
 		} else {
-			throw new Exception("Votre mot de passe est invalide");
+			throw new Exception("Votre mot de passe est trop court, 5 caracteres minimum.");
 		}
 	} else {
-		throw new Exception("Votre email est invalide");
+		throw new Exception("Votre email est trop court, 5 caracteres minimum.");
 	}
 }
 
@@ -32,6 +31,7 @@ function login($authentifier, $password)
 	$userInfo = $userManager->getInfo($authentifier);
 	if (password_verify($password, $userInfo['password'])) {
 		$_SESSION['id'] = $userInfo['id'];
+		$_SESSION['auth'] = $userInfo['auth'];
 		header('Location: index.php?action=home');
 	} else {
 		throw new Exception('email ou mot de passe inconnu');

@@ -19,7 +19,7 @@ function isInPlaceList($placeID, $placeList)
 {
 	foreach ($placeList as $data) {
 		if ($data['id'] == $placeID) {
-			return [true, $data['nom']];
+			return [true, $data['name']];
 		}
 	}
 	return [false, null];
@@ -30,7 +30,7 @@ function achatsDisplay($placeSelected)
 	if (isset($_SESSION['id']) && $_SESSION['id'] > 0) {
 		$otherManager = new OtherManager();
 		$clientsManager = new ClientsManager();
-		$placeList = $otherManager->getPlaces()->fetchAll();
+		$placeList = $otherManager->getSellingPlaces()->fetchAll();
 		$clientsList = $clientsManager->getClients();
 
 		if ($placeSelected != 0 && isInPlaceList($placeSelected, $placeList)[0]) {
@@ -56,7 +56,7 @@ function recordAchat($post)
 	if ($post['client-selected'] == 0 || $marchandisesType == 0 || $post['date-achat'] == '') {
 		throw new Exception("Erreur dans la saisie des données, activez Javascript pour plus d'informations");
 	}
-	$affectedLines = $achatManager->recordAchat(htmlspecialchars($post['client-selected']), htmlspecialchars($post['date-achat']), htmlspecialchars($post['place']), $marchandisesType, htmlspecialchars($post['prix']), htmlspecialchars($post['montant']), htmlspecialchars($post['motant-chq']));
+	$affectedLines = $achatManager->recordAchat(htmlspecialchars($post['client-selected']), htmlspecialchars($post['date-achat']), htmlspecialchars($post['place']), $marchandisesType, htmlspecialchars($post['prix']), htmlspecialchars($post['montant']), htmlspecialchars($post['montant-chq']));
 	if ($affectedLines) {
 		header('Location: index.php?action=achats-display');
 	} else {
@@ -80,14 +80,26 @@ function addClient($firstName, $lastName, $placeID, $phone, $nbAdults, $nbChildr
 
 	$name = strtoupper($lastName) . " " . ucfirst(strtolower($firstName));
 	$clientsCount = $clientsManager->clientCountPlace($placeID);
-	$placeName = $otherManager->getPlace($placeID)['nom'];
-	$pseudo = sprintf("%.3s%03d", strtoupper($placeName), $clientsCount + 1);
+	$placeName = $otherManager->getPlace($placeID)['nom_reduit'];
+	$pseudo = sprintf("%s_%03d", strtoupper($placeName), $clientsCount + 1);
 	$affectedLines = $clientsManager->addClient($name, $pseudo, $placeID, $phone, $nbAdults, $nbChildren, $nbBabies, $socWorker);
 
 	if ($affectedLines) {
 		header('Location: index.php?action=achats-display');
 	} else {
 		throw new Exception("Error Processing Request");
+	}
+}
+
+function addPlace($placeName, $placeNameShort)
+{
+	$otherManager = new OtherManager();
+
+	$newPlaceID = $otherManager->addPlace($placeName, strtoupper($placeNameShort));
+	if (!$newPlaceID) {
+		throw new Exception("Error Processing Request");
+	} else {
+		return ($newPlaceID);
 	}
 }
 
@@ -140,5 +152,19 @@ function listeClientsDisplay($mode, $id)
 			include('views/error_404.php');
 			die();
 			break;
+	}
+}
+
+function achatsRecapDisplay()
+{
+	$achatManager = new AchatManager();
+
+	$listeAchats = $achatManager->getListeAchats(date("Y-m-d"));
+	$sums = $achatManager->getDaySums(date("Y-m-d"));
+	
+	if ($listeAchats) {
+		require('views/achats-recap-display.php');
+	} else {
+		throw new Exception("Error Processing Request");
 	}
 }

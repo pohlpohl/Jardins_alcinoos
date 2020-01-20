@@ -5,7 +5,7 @@
 	<div class="col s12 m7">
 		<select name="place-selected" id="place-selected">
 			<?php foreach ($placeList as $data) : ?>
-				<option value="<?= $data['id'] ?>" <?php echo (isset($_SESSION['place']) && $_SESSION['place'] == $data['id']) ? 'selected' : '' ?>><?= $data['nom'] ?></option>
+				<option value="<?= $data['id'] ?>" <?php echo (isset($_SESSION['place']) && $_SESSION['place'] == $data['id']) ? 'selected' : '' ?>><?= $data['name'] ?></option>
 			<?php endforeach; ?>
 		</select>
 		<label>Choisissez le lieu où vous vous trouvez</label>

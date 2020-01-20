@@ -30,10 +30,30 @@ class OtherManager extends Manager
 		return $places;
 	}
 
+	function getSellingPlaces()
+	{
+		$places = $this->db->query('SELECT * FROM lieux_achat');
+
+		return $places;
+	}
+
 	function getSocialWorkers()
 	{
 		$req = $this->db->query('SELECT * FROM travailleurs_sociaux');
 
 		return $req;
+	}
+
+	function addPlace($placeName, $placeNameShort)
+	{
+		$req = $this->db->prepare('INSERT INTO Lieux(nom, nom_reduit) VALUES(?, ?)');
+		$affectedLines = $req->execute([$placeName, $placeNameShort]);
+
+
+		if ($affectedLines) {
+			return ($this->db->lastInsertId());
+		} else {
+			return ($affectedLines);
+		}
 	}
 }

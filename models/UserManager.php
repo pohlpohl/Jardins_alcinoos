@@ -16,8 +16,12 @@ class UserManager extends Manager
 
 	public function getInfo($authentifier)
 	{
-		$sql = 'SELECT * FROM utilisateurs WHERE email = ?';
-
+		if ((int)($authentifier) > 0) {
+			$sql = 'SELECT * FROM utilisateurs WHERE id = ?';
+		} else {
+			$sql = 'SELECT * FROM utilisateurs WHERE email = ?';
+		}
+		
 		$req = $this->db->prepare($sql);
 		$req->execute([$authentifier]);
 		$response = $req->fetch();
@@ -49,8 +53,8 @@ class UserManager extends Manager
 	{
 		$hash = password_hash($password, PASSWORD_DEFAULT);
 
-		$req = $this->db->prepare('INSERT INTO utilisateurs(email, prenom, password) VALUES(?, ?, ?)');
-		$affectedLines = $req->execute([$email, $prenom, $hash]);
+		$req = $this->db->prepare('INSERT INTO utilisateurs(email, prenom, password, auth) VALUES(?, ?, ?, ?)');
+		$affectedLines = $req->execute([$email, $prenom, $hash, "caisse"]);
 
 		return $affectedLines;
 	}

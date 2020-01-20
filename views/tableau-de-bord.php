@@ -4,6 +4,13 @@
 	<h3 class="center">Bienvenue sur le tableau de bord !</h3>
 </section>
 
+<section class="action-buttons container center">
+	<?php if ($_SESSION['auth'] == 'admin') : ?>
+		<a class="btn" href="index.php?action=achats-display">Panneau d'achats</a>
+		<a class="btn" href="index.php?action=achats-recap">Récapitulatif des achats du jour</a>
+	<?php endif; ?>
+</section>
+
 <section class='stats row'>
 	<div class='col s12 l6'>
 		<div class="card blue-grey darken-2">

@@ -67,4 +67,20 @@ class AchatManager extends Manager
 		$req->execute([$date, $date]);
 		return $req->fetchAll();
 	}
+
+	function getListeAchats($date)
+	{
+		$req = $this->db->prepare('SELECT achats.*, clients.nom_prenom as client_name FROM achats, clients WHERE achats.client = clients.id AND achats.date_achat = ?');
+
+		$req->execute([$date]);
+		return ($req);
+	}
+	
+	function getDaySums($date)
+	{
+		$req = $this->db->prepare('SELECT SUM(prix) as prix, SUM(montant) as montant, SUM(montant_chq_service) as montant_chq, COUNT(client) as clients FROM achats WHERE achats.date_achat = ?');
+		
+		$req->execute([$date]);
+		return ($req->fetch());
+	}
 }

@@ -18,39 +18,13 @@
 	</div>
 	<div id="authentification_container" class="container z-depth-2 row">
 		<h4 class="center">Pour utiliser le site, vous devez vous authentifier</h4> 
-		<!-- Signin Form
-		<div class="col s12 m6">
-			<form id="signin_form" action="index.php?action=signin" method="post">
-				<h3 id="ajax-test">S'inscrire</h3>
-				<div class="input-field">
-					<input type="text" name="signin_pseudo" id="signin_pseudo" required>
-					<label for="signin_pseudo">Pseudo</label>
-				</div>
-				<div class="input-field">
-					<input type="email" name="signin_email" id="signin_email" required>
-					<label for="signin_email">Email</label>
-				</div>
-				<div class="input-field">
-					<input type="password" name="signin_password" id="signin_password" required>
-					<label for="signin_password">Mot de passe</label>
-				</div>
-				<div class="input-field">
-					<input type="password" name="signin_confirmation" id="signin_confirmation" required>
-					<label for="signin_confirmation">Confirmation</label>
-				</div>
-				<p id="signin_error"></p>
-				<div class="input-field center">
-					<input class="btn" type="submit" id="signin_submit" name="signin_submit" value="S'inscrire !">
-				</div>
-			</form>
-		</div> -->
 		<!-- Login Form -->
 		<div class="col s12 m6 offset-m3">
 			<h3>Se connecter</h3>
 			<form id="login_form" action="index.php?action=login" method="post">
 				<div class="input-field">
 					<input type="text" name="login_authentifier" id="login_authentifier" required>
-					<label for="login_authentifier">Identifiant ou mail</label>
+					<label for="login_authentifier">Mail</label>
 				</div>
 				<div class="input-field">
 					<input type="password" name="login_password" id="login_password" required>

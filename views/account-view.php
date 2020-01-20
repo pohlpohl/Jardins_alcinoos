@@ -1,4 +1,4 @@
-<?php require('views.header.php') ?>
+<?php require('views/header.php') ?>
 
 <div class="container">
 	<h2>Mon compte :</h2>
@@ -32,23 +32,36 @@
 			</tbody>
 		</table>
 	<?php endif; ?>
+	<!-- Signin Form -->
+		<div class="col s12 m6">
+			<form id="signin_form" action="index.php?action=signin" method="post">
+				<h3 id="ajax-test">Ajouter un utilisateur</h3>
+				<div class="input-field">
+					<input type="text" name="signin_prenom" id="signin_prenom" required>
+					<label for="signin_prenom">Prénom</label>
+				</div>
+				<div class="input-field">
+					<input type="email" name="signin_email" id="signin_email" required>
+					<label for="signin_email">Email</label>
+				</div>
+				<div class="input-field">
+					<input type="password" name="signin_password" id="signin_password" required>
+					<label for="signin_password">Mot de passe</label>
+				</div>
+				<div class="input-field">
+					<input type="password" name="signin_confirmation" id="signin_confirmation" required>
+					<label for="signin_confirmation">Confirmation</label>
+				</div>
+				<p id="signin_error"></p>
+				<div class="input-field center">
+					<input class="btn" type="submit" id="signin_submit" name="signin_submit" value="Ajouter un utilisateur !">
+				</div>
+			</form>
+		</div>
 </div>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<!-- Materialize js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<!-- Custom js -->
-<script src="public/js/account-view.js"></script>
-<!-- Materialize initializations -->
-<script>
-	$(document).ready(function() {
-		$('.dropdown-trigger').dropdown({
-			constrainWidth: false,
-			coverTrigger: false,
-			alignment: 'right',
-			hover: false
-		});
-	});
-</script>
+<?php require('views/footer.php'); ?>
+
 </body>
+
+</html>

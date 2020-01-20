@@ -29,7 +29,6 @@
 </div>
 
 <?php require('views/footer.php'); ?>
-<script src="public/js/tableau-de-bord.js"></script>
 
 </body>
 

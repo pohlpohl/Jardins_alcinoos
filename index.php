@@ -13,10 +13,14 @@ try {
 				home();
 				break;
 			case 'achats-display':
-				if (isset($_SESSION['place'])) {
-					achatsDisplay($_SESSION['place']);
+				if ($_SESSION['auth'] == 'admin') {
+					if (isset($_SESSION['place'])) {
+						achatsDisplay($_SESSION['place']);
+					} else {
+						achatsDisplay(0);
+					}
 				} else {
-					achatsDisplay(0);
+					require('views/unauthorized.php');
 				}
 				break;
 			case 'change-place':
@@ -36,7 +40,12 @@ try {
 				newClientDisplay();
 				break;
 			case 'new-client-add':
-				addClient(htmlspecialchars($_POST['client-first-name']), htmlspecialchars($_POST['client-last-name']), htmlspecialchars($_POST['place-selected']), htmlspecialchars($_POST['client-phone']), htmlspecialchars($_POST['client-adults']), htmlspecialchars($_POST['client-children']), htmlspecialchars($_POST['client-babies']), htmlspecialchars($_POST['social-worker']));
+				if ($_POST['place-selected'] == -1) {
+					$newPlaceID = addPlace($_POST['new-place'], $_POST['new-place-short']);
+					addClient(htmlspecialchars($_POST['client-first-name']), htmlspecialchars($_POST['client-last-name']), $newPlaceID, htmlspecialchars($_POST['client-phone']), htmlspecialchars($_POST['client-adults']), htmlspecialchars($_POST['client-children']), htmlspecialchars($_POST['client-babies']), htmlspecialchars($_POST['social-worker']));
+				} else {
+					addClient(htmlspecialchars($_POST['client-first-name']), htmlspecialchars($_POST['client-last-name']), htmlspecialchars($_POST['place-selected']), htmlspecialchars($_POST['client-phone']), htmlspecialchars($_POST['client-adults']), htmlspecialchars($_POST['client-children']), htmlspecialchars($_POST['client-babies']), htmlspecialchars($_POST['social-worker']));
+				}
 				break;
 			case 'export-csv':
 				exportCsv();
@@ -51,9 +60,16 @@ try {
 					die();
 				}
 				break;
+			case 'achats-recap':
+				if ($_SESSION['auth'] == 'admin') {
+					achatsRecapDisplay();
+				} else {
+					require('views/unauthorized.php');
+				}
+				break;
 			case 'signin':
 				if ($_POST['signin_password'] === $_POST['signin_confirmation']) {
-					signin(htmlspecialchars($_POST['signin_pseudo']), htmlspecialchars($_POST['signin_email']), htmlspecialchars($_POST['signin_password']));
+					signin(htmlspecialchars($_POST['signin_prenom']), htmlspecialchars($_POST['signin_email']), htmlspecialchars($_POST['signin_password']));
 				} else {
 					home('authentification_problem');
 				}
