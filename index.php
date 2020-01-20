@@ -13,14 +13,10 @@ try {
 				home();
 				break;
 			case 'achats-display':
-				if ($_SESSION['auth'] == 'admin') {
-					if (isset($_SESSION['place'])) {
-						achatsDisplay($_SESSION['place']);
-					} else {
-						achatsDisplay(0);
-					}
+				if (isset($_SESSION['place'])) {
+					achatsDisplay($_SESSION['place']);
 				} else {
-					require('views/unauthorized.php');
+					achatsDisplay(0);
 				}
 				break;
 			case 'change-place':
@@ -51,13 +47,17 @@ try {
 				exportCsv();
 				break;
 			case 'liste-clients':
-				if (isset($_GET['select'])) {
-					$selectID = (isset($_GET['id']) && $_GET['id'] > 0) ? htmlspecialchars($_GET['id']) : 0;
-					listeClientsDisplay(htmlspecialchars($_GET['select']), $selectID);
+				if ($_SESSION['auth'] == 'admin') {
+					if (isset($_GET['select'])) {
+						$selectID = (isset($_GET['id']) && $_GET['id'] > 0) ? htmlspecialchars($_GET['id']) : 0;
+						listeClientsDisplay(htmlspecialchars($_GET['select']), $selectID);
+					} else {
+						http_response_code(404);
+						include('views/error_404.php');
+						die();
+					}
 				} else {
-					http_response_code(404);
-					include('views/error_404.php');
-					die();
+					require('views/unauthorized.php');
 				}
 				break;
 			case 'achats-recap':
