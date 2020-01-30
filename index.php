@@ -62,16 +62,34 @@ try {
 				break;
 			case 'achats-recap':
 				if ($_SESSION['auth'] == 'admin') {
-					achatsRecapDisplay();
+					if (isset($_GET['select'])) {
+						achatsRecapDisplay(htmlspecialchars($_GET['select']));
+					} else {
+						achatsRecapDisplay("all");
+					}
 				} else {
 					require('views/unauthorized.php');
 				}
 				break;
-			case 'signin':
-				if ($_POST['signin_password'] === $_POST['signin_confirmation']) {
-					signin(htmlspecialchars($_POST['signin_prenom']), htmlspecialchars($_POST['signin_email']), htmlspecialchars($_POST['signin_password']));
+			case 'modify-achat-display':
+				if (isset($_GET['id']) && $_GET['id'] > 0) {
+					modifyAchat($_GET['id']);
+				}
+				break;
+			case 'delete-achat':
+				if ($_SESSION['auth'] == 'admin' && isset($_GET['id']) && $_GET['id'] > 0) {
+					deleteAchat(htmlspecialchars($_GET['id']), htmlspecialchars($_GET['go-back']));
 				} else {
-					home('authentification_problem');
+					http_response_code(404);
+					include('views/error_404.php');
+					die();
+				}
+				break;
+			case 'signin':
+				if ($_SESSION['auth'] == "admin" && $_POST['signin_password'] === $_POST['signin_confirmation']) {
+					signin(htmlspecialchars($_POST['signin_prenom']), htmlspecialchars($_POST['signin_email']), htmlspecialchars($_POST['signin_password']), htmlspecialchars($_POST['auth']));
+				} else {
+					displayAccount($_SESSION['id']);
 				}
 				break;
 			case 'login':
@@ -85,19 +103,19 @@ try {
 					displayAccount($_SESSION['id']);
 				}
 				break;
-			case 'modify-pseudo':
-				modifyUserInfo($_SESSION['id'], htmlspecialchars($_POST['pseudo']), "pseudo");
+			case 'modify-user-display':
+				if (isset($_GET['id']) && ($_GET['id'] == $_SESSION['id'] || $_SESSION['auth'] == 'admin')) {
+					displayModifyUser($_GET['id']);
+				}
 				break;
-			case 'modify-email':
-				modifyUserInfo($_SESSION['id'], htmlspecialchars($_POST['email']), "email");
-				break;
-			case 'modify-password':
-				modifyPassword($_SESSION['id'], htmlspecialchars($_POST['old-password']), htmlspecialchars($_POST['new-password']), htmlspecialchars($_POST['confirm']));
+			case 'modify-user':
+				modifyUserInfo($_SESSION['id'], htmlspecialchars($_GET['modified-id']), htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['old-password']), htmlspecialchars($_POST['password']), htmlspecialchars($_POST['confirmation']), (isset($_POST['auth'])) ? htmlspecialchars($_POST['auth']) : '');
 				break;
 			case 'delete-user':
-				if (isset($_GET['user-id']) && $_GET['user-id'] > 0) {
-					deleteUser($_SESSION['id'], htmlspecialchars($_GET['user-id']));
+				if (isset($_GET['deleted-id']) && $_GET['deleted-id'] > 0 && $_SESSION['auth'] = 'admin') {
+					deleteUser($_SESSION['id'], htmlspecialchars($_GET['deleted-id']));
 				}
+				break;
 			default:
 				http_response_code(404);
 				include('views/error_404.php');

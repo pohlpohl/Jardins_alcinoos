@@ -14,11 +14,26 @@ class AchatManager extends Manager
 		$this->db = $this->dbConnect();
 	}
 
+	function getInfo($id)
+	{
+		$achats = $this->db->prepare('SELECT achats.*, DATE_FORMAT(achats.date_achat, "%d/%m/%Y") as date_fr FROM achats WHERE id = ?');
+		$achats->execute([$id]);
+
+		return $achats->fetch();
+	}
+
 	function getAchats()
 	{
-		$achats = $this->db->query('SELECT * FROM achats');
+		$achats = $this->db->query('SELECT achats.*, clients.nom_prenom as client_name, DATE_FORMAT(achats.date_achat, "%d/%m/%Y") as date_fr FROM achats, clients WHERE achats.client = clients.id');
 
 		return $achats;
+	}
+
+	function getSumAchats()
+	{
+		$achats = $this->db->query('SELECT SUM(prix) as prix, SUM(montant) as montant, SUM(montant_chq_service) as montant_chq, COUNT(client) as clients FROM achats');
+
+		return $achats->fetch();
 	}
 
 	function recordAchat($clientSelected, $dateAchat, $place, $marchandisesType, $prix, $montant, $montantChq)
@@ -70,7 +85,7 @@ class AchatManager extends Manager
 
 	function getListeAchats($date)
 	{
-		$req = $this->db->prepare('SELECT achats.*, clients.nom_prenom as client_name FROM achats, clients WHERE achats.client = clients.id AND achats.date_achat = ?');
+		$req = $this->db->prepare('SELECT achats.*, clients.nom_prenom as client_name, DATE_FORMAT(achats.date_achat, "%d/%m/%Y") as date_fr FROM achats, clients WHERE achats.client = clients.id AND achats.date_achat = ?');
 
 		$req->execute([$date]);
 		return ($req);
@@ -82,5 +97,14 @@ class AchatManager extends Manager
 		
 		$req->execute([$date]);
 		return ($req->fetch());
+	}
+
+	function deleteAchat($ID)
+	{
+		$req = $this->db->prepare('DELETE FROM achats WHERE id = ?');
+
+		$affectedLines = $req->execute([$ID]);
+
+		return $affectedLines;
 	}
 }

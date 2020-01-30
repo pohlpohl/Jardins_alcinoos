@@ -1,4 +1,4 @@
-Générer les recettes du jour
+Script de backup
 
 Génération de fichier excel pour le palais de la femme (voir fichier excel) + ajouter :
 	- Proportions de catégories d'achat sur le total des clients
@@ -7,9 +7,5 @@ Pour chaque personne : => On veut une liste
 	- Panier moyen (sur 1 mois/ 2mois/ trimestre/ un an)
 	- Fréquence de venue (sur 2 mois ou autre)
 	- Ratio de catégorie d'achat (sur 1 mois/ 2mois/ trimestre/ un an)
-
-Script de backup
-
-Modification/ suppression/ meilleure création d'utilisateurs
 
 Automatisation de création de fichier excel pour la saisie de sortie de caisse

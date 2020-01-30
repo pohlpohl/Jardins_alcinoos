@@ -155,15 +155,47 @@ function listeClientsDisplay($mode, $id)
 	}
 }
 
-function achatsRecapDisplay()
+function achatsRecapDisplay($selector)
 {
 	$achatManager = new AchatManager();
 
-	$listeAchats = $achatManager->getListeAchats(date("Y-m-d"));
-	$sums = $achatManager->getDaySums(date("Y-m-d"));
-	
+	if ($selector == "all") {
+		$listeAchats = $achatManager->getAchats();
+		$sums = $achatManager->getSumAchats();
+	} else {
+		$listeAchats = $achatManager->getListeAchats($selector);
+		$sums = $achatManager->getDaySums($selector);
+	}
+
+
 	if ($listeAchats) {
 		require('views/achats-recap-display.php');
+	} else {
+		throw new Exception("Error Processing Request");
+	}
+}
+
+function modifyAchat($id)
+{
+	$achatManager = new AchatManager();
+	$clientsManager = new ClientsManager();
+	$otherManager = new OtherManager();
+	
+	$placeList = $otherManager->getSellingPlaces()->fetchAll();
+	$achatInfo = $achatManager->getInfo($id);
+	$clientsList = $clientsManager->getClients();
+
+	require("views/achats.php");
+}
+
+function deleteAchat($id, $goBack)
+{
+	$achatManager = new AchatManager();
+	$affectedLines = $achatManager->deleteAchat($id);
+
+	if ($affectedLines)
+	{
+		header('Location: index.php?action=achats-recap&&select=all');
 	} else {
 		throw new Exception("Error Processing Request");
 	}

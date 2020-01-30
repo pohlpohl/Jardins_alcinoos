@@ -16,12 +16,12 @@ class UserManager extends Manager
 
 	public function getInfo($authentifier)
 	{
-		if ((int)($authentifier) > 0) {
+		if ((int) ($authentifier) > 0) {
 			$sql = 'SELECT * FROM utilisateurs WHERE id = ?';
 		} else {
 			$sql = 'SELECT * FROM utilisateurs WHERE email = ?';
 		}
-		
+
 		$req = $this->db->prepare($sql);
 		$req->execute([$authentifier]);
 		$response = $req->fetch();
@@ -30,7 +30,7 @@ class UserManager extends Manager
 	}
 
 	public function getUsers()
-	{ 
+	{
 		$req = $this->db->query('SELECT * FROM utilisateurs');
 
 		return $req;
@@ -49,12 +49,12 @@ class UserManager extends Manager
 		}
 	}
 
-	public function signin($email, $prenom, $password)
+	public function signin($email, $prenom, $password, $auth)
 	{
 		$hash = password_hash($password, PASSWORD_DEFAULT);
 
 		$req = $this->db->prepare('INSERT INTO utilisateurs(email, prenom, password, auth) VALUES(?, ?, ?, ?)');
-		$affectedLines = $req->execute([$email, $prenom, $hash, "caisse"]);
+		$affectedLines = $req->execute([$email, $prenom, $hash, $auth]);
 
 		return $affectedLines;
 	}
@@ -77,12 +77,14 @@ class UserManager extends Manager
 
 	public function modifyInfo($userID, $modifiedInfo, $type)
 	{
-		if ($type == "pseudo") {
-			$req = $this->db->prepare('UPDATE utilisateurs SET pseudo = ? WHERE id = ?');
+		if ($type == "prenom") {
+			$req = $this->db->prepare('UPDATE utilisateurs SET prenom = ? WHERE id = ?');
 		} else if ($type == "email") {
 			$req = $this->db->prepare('UPDATE utilisateurs SET email = ? WHERE id = ?');
 		} else if ($type == "password") {
 			$req = $this->db->prepare('UPDATE utilisateurs SET password = ? WHERE id = ?');
+		} else if ($type == "auth") {
+			$req = $this->db->prepare('UPDATE utilisateurs SET auth = ? WHERE id = ?');
 		} else {
 			throw new Exception("Erreur de synthaxe lors de la séléction du type de champs à modifier");
 		}
@@ -119,11 +121,8 @@ class UserManager extends Manager
 
 	public function deleteUser($userID)
 	{
-		$req = $this->db->prepare('DELETE FROM utilisateurs WHERE id = ?;
-									DELETE FROM Category WHERE user_id = ?;
-									DELETE FROM Tags WHERE user_id = ?;
-									DELETE FROM ToDos WHERE user_id = ?;');
-		$affectedLines = $req->execute([$userID, $userID, $userID, $userID]);
+		$req = $this->db->prepare('DELETE FROM utilisateurs WHERE id = ?');
+		$affectedLines = $req->execute([$userID]);
 		return $affectedLines;
 	}
 }

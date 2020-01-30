@@ -7,7 +7,8 @@
 <section class="action-buttons container center">
 	<?php if ($_SESSION['auth'] == 'admin') : ?>
 		<a class="btn" href="index.php?action=achats-display">Panneau d'achats</a>
-		<a class="btn" href="index.php?action=achats-recap">Récapitulatif des achats du jour</a>
+		<a class="btn" href="index.php?action=achats-recap&&select=<?= date('Y-m-d') ?>">Récapitulatif des achats du jour</a>
+		<a class="btn" href="index.php?action=achats-recap&&select=all">Tout les achats</a>
 	<?php endif; ?>
 </section>
 
@@ -117,7 +118,7 @@
 	</div>
 </section>
 
-<a href="index.php?action=export-csv" class="btn">Exporter achats</a>
+<!-- <a href="index.php?action=export-csv" class="btn">Exporter achats</a> -->
 
 <?php require('views/footer.php'); ?>
 <script src="public/js/tableau-de-bord.js"></script>

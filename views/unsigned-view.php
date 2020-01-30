@@ -23,7 +23,7 @@
 			<h3>Se connecter</h3>
 			<form id="login_form" action="index.php?action=login" method="post">
 				<div class="input-field">
-					<input type="text" name="login_authentifier" id="login_authentifier" required>
+					<input type="text" name="login_authentifier" id="login_authentifier" required autofocus>
 					<label for="login_authentifier">Mail</label>
 				</div>
 				<div class="input-field">

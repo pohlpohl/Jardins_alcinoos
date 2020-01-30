@@ -2,15 +2,15 @@
 
 require_once('models/autoload.php');
 
-function signin($prenom, $email, $password)
+function signin($prenom, $email, $password, $auth)
 {
 	if (strlen($email) > 4) {
-		if (strlen($password) > 5) {
+		if (strlen($password) >= 5) {
 			$userManager = new UserManager();
 			if (!$userManager->checkExistingUser($email)) {
-				$affectedLines = $userManager->signin($email, $prenom, $password);
+				$affectedLines = $userManager->signin($email, $prenom, $password, $auth);
 				if ($affectedLines) {
-					login($email, $password);
+					require('Location: index.php?action=account');
 				} else {
 					throw new Exception("Impossible d'ajouter l'utilisateur");
 				}
@@ -54,25 +54,48 @@ function displayAccount($userID)
 	require('views/account-view.php');
 }
 
-function modifyPassword($userID, $oldPassword, $newPassword, $confirm)
+function displayModifyUser($userID)
 {
 	$userManager = new UserManager();
 	$userInfo = $userManager->getInfo($userID);
+	require('views/modify-user.php');
+}
 
-	if (!password_verify($oldPassword, $userInfo['password'])) {
-		throw new Exception("L'ancien mot de passe est invalide.");
-	} else if (strlen($newPassword) < 5) {
-		throw new Exception("Le nouveau mot de passe est trop court, 5 caractères minimum.");
-	} else if ($newPassword !== $confirm) {
-		throw new Exception("La confirmation ne correspond pas.");
-	} else {
-		$affectedLines = $userManager->modifyPassword($userID, $newPassword);
-	}
+function modifyUserInfo($userID, $modifiedID, $prenom, $email, $oldPassword, $password, $confirmation, $auth)
+{
+	$userManager = new UserManager();
+	$userInfo = $userManager->getInfo($userID);
+	$modifiedInfo = $userManager->getInfo($modifiedID);
 
-	if ($affectedLines) {
+	if ($userInfo['auth'] == 'admin' || $userID == $modifiedID) {
+		$affectedLines = $userManager->modifyInfo($modifiedID, $prenom, "prenom");
+		if (!$affectedLines) {
+			throw new Exception("Erreur lors de l'enregistrement du prenom.");
+		}
+		$affectedLines = $userManager->modifyInfo($modifiedID, $email, "email");
+		if (!$affectedLines) {
+			throw new Exception("Erreur lors de l'enregistrement de l'email.");
+		}
+		if ($auth !== '') {
+			$affectedLines = $userManager->modifyInfo($modifiedID, $auth, "auth");
+		}
+		if (!$affectedLines) {
+			throw new Exception("Erreur lors de l'enregistrement de l'autorisation.");
+		}
+		if ($password !== '' && $oldPassword !== '' && $confirmation !== '') {
+			if ($userInfo['auth'] == 'admin' || password_verify($oldPassword, $modifiedInfo['password'])) {
+				if ($password == $confirmation) {
+					$userManager->modifyPassword($modifiedID, $password);
+				} else {
+					throw new Exception("Le nouveau mot de passe et la confirmation ne correspondent pas");
+				}
+			} else {
+				throw new Exception("L'ancien mot de passe est faux");
+			}
+		}
 		header('Location: index.php?action=account');
 	} else {
-		throw new Exception("Impossible de modifier le mot de passe");
+		throw new Exception("Vous n'avez pas l'authorisation de modifier ces informations.");
 	}
 }
 
@@ -81,10 +104,16 @@ function deleteUser($userID, $deletedUser)
 	$userManager = new UserManager();
 	$userInfo = $userManager->getInfo($userID);
 
-	if ($userInfo['is_admin']) {
+	if ($userInfo['auth'] = 'admin' || $userID == $deletedUser) {
 		$affectedLines = $userManager->deleteUser($deletedUser);
 		if ($affectedLines) {
-			header('Location: index.php?action=account');
+			if ($userID == $deletedUser) {
+				unset($_SESSION['id']);
+				unset($_SESSION['auth']);
+				header('Location: index.php?action=home');
+			} else {
+				header('Location: index.php?action=account');
+			}
 		} else {
 			throw new Exception("Impossible de supprimer l'utilisateur");
 		}

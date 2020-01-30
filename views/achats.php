@@ -2,7 +2,9 @@
 
 <div class="container">
 	<h2>Nouvel achat</h2>
+	<?php if ($_GET['action'] == "achats-display"): ?>
 	<p>Vous avez sélectionné le lieu : <?= isInPlaceList($_SESSION['place'], $placeList)[1] ?>. <a href="index.php?action=delete-place">Changer de lieu</a></p>
+	<?php endif; ?>
 	<form action="index.php?action=achat" method="post" id="buy-form">
 		<input type="hidden" name="place" value="<?= $_SESSION['place'] ?>">
 		<div class="row">
@@ -10,7 +12,7 @@
 				<select name="client-selected" id="client-selected" autofocus>
 					<option value="0" disabled selected>Sélectionnez un client</option>
 					<?php while ($data = $clientsList->fetch()) : ?>
-						<option value="<?= $data['id'] ?>"><?= $data['nom_prenom'] ?></option>
+						<option value="<?= $data['id'] ?>" <?= ($_GET['action'] == 'modify-achat-display' && $data['id'] == $achatInfo['client']) ? 'selected' : ''; ?>><?= $data['nom_prenom'] ?></option>
 					<?php endwhile; ?>
 				</select>
 				<label>Clients</label>
@@ -21,7 +23,7 @@
 			</div>
 			<div class="input-field col s12" id='notes-client'></div>
 			<div class="input-field col s12">
-				<input type="date" id='date-achat' name='date-achat' value='<?php echo (date('Y-m-d')); ?>'>
+				<input type="date" id='date-achat' name='date-achat' value='<?php echo ($_GET['action'] == 'modify-achat-display') ? $achatInfo['date_achat'] : (date('Y-m-d')); ?>'>
 				<label for="date-achat">Date d'achat</label>
 				<p id="date-achat-help" class="helper"></p>
 			</div>
@@ -29,20 +31,20 @@
 				<p>Quel(s) type(s) d'achats ont été effectués ?</p>
 				<div class="row">
 					<label class="col m6 l3 black-text">
-						<input type="checkbox" name="frais" id="frais" value="1">
+						<input type="checkbox" name="hygiene" id="hygiene" value="1" <?= ($_GET['action'] == 'modify-achat-display' && floor($achatInfo['type_marchandises'] % 16 / 8)) ? 'checked' : '' ?>>
+						<span>Produits d'hygiène</span>
+					</label>
+					<label class="col m6 l3 black-text">
+						<input type="checkbox" name="frais" id="frais" value="1" <?= ($_GET['action'] == 'modify-achat-display' && floor($achatInfo['type_marchandises'] % 8 / 4)) ? 'checked' : '' ?>>
 						<span>Frais</span>
 					</label>
 					<label class="col m6 l3 black-text">
-						<input type="checkbox" name="sec" id="sec" value="1">
+						<input type="checkbox" name="sec" id="sec" value="1" <?= ($_GET['action'] == 'modify-achat-display' && floor($achatInfo['type_marchandises'] % 4 / 2)) ? 'checked' : '' ?>>
 						<span>Sec</span>
 					</label>
 					<label class="col m6 l3 black-text">
-						<input type="checkbox" name="fruits-legumes" id="fruits-legumes" value="1">
+						<input type="checkbox" name="fruits-legumes" id="fruits-legumes" value="1" <?= ($_GET['action'] == 'modify-achat-display' && floor($achatInfo['type_marchandises'] % 2 / 1)) ? 'checked' : '' ?>>
 						<span>Fruits & Légumes</span>
-					</label>
-					<label class="col m6 l3 black-text">
-						<input type="checkbox" name="hygiene" id="hygiene" value="1">
-						<span>Produits d'hygiène</span>
 					</label>
 				</div>
 				<p id="type-achat-help" class="helper"></p>
