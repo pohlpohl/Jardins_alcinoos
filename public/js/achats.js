@@ -62,8 +62,4 @@ $('#buy-form').submit(function(e) {
 		e.preventDefault();
 		$('#date-achat-help').text('Veuillez selectionner une date d\'achat');
 	}
-	if (!($('#sec')[0].checked || $('#frais')[0].checked || $('#fruits-legumes')[0].checked)) {
-		e.preventDefault();
-		$('#type-achat-help').text('Veuillez selectionner au moins une catégorie d\'achat');
-	}
 });
