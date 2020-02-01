@@ -1,4 +1,37 @@
-Script de backup
+Prix cash sur liste des achats
+
+Liste de tout les achats d'un client + somme des achats + moyenne des achats sur sa page client
+
+Somme totale et moyenne totale des achats sur le Tableau de bord
+
+Tri par famille dans liste des clients
+
+Possibilité d'ajouter des travailleurs sociaux
+
+Clic sur nom du client mène vers page du client sur liste des achats.
+
+Possibilité de réactivation de client dans la page de création de client
+
+Suppression de client ne supprime pas les achats => Les achats doivent pouvoir avoir comme client : "client supprimé"
+
+Voir les clients désactivés dans liste des achats.
+
+Trier la liste des achats par date descendente
+
+BUG : Désactivation de client ne mène nulle part, vérifier suppression de client. 
+BUG : Pb de redirection lors de la création d'utilisateurs
+
+Vérifier unicité des identifiants des utilisateurs
+
+Ajouter qui a entré l'achat dans l'enregistrement d'achat
+
+Pagination sur liste d'achat + liste des clients
+
+création de travailleurs sociaux
+
+Interdiction de suppression d'admin
+
+Script de mise à jour
 
 Génération de fichier excel pour le palais de la femme (voir fichier excel) + ajouter :
 	- Proportions de catégories d'achat sur le total des clients
