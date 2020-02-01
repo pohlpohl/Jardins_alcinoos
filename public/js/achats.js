@@ -37,7 +37,7 @@ $('#montant').change(calculateNewBalance);
 $('#prix').change(function(){
 	calculateNewBalance();
 	if (client['nom_lieu'] == 'Palais de la femme')
-		$('#montant-chq').val(Math.floor(this.value / 5));
+		$('#montant-chq').val(this.value);
 	$('#montant').val(this.value);
 });
 

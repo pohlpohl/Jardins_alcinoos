@@ -53,7 +53,7 @@ function recordAchat($post)
 	$marchandisesType += (isset($post['sec'])) ? 2 : 0;
 	$marchandisesType += (isset($post['fruits-legumes'])) ? 1 : 0;
 
-	if ($post['client-selected'] == 0 || $marchandisesType == 0 || $post['date-achat'] == '') {
+	if ($post['client-selected'] == 0 || $post['date-achat'] == '') {
 		throw new Exception("Erreur dans la saisie des données, activez Javascript pour plus d'informations");
 	}
 	$affectedLines = $achatManager->recordAchat(htmlspecialchars($post['client-selected']), htmlspecialchars($post['date-achat']), htmlspecialchars($post['place']), $marchandisesType, htmlspecialchars($post['prix']), htmlspecialchars($post['montant']), htmlspecialchars($post['montant-chq']));
