@@ -24,7 +24,15 @@ class AchatManager extends Manager
 
 	function getAchats()
 	{
-		$achats = $this->db->query('SELECT achats.*, clients.nom_prenom as client_name, DATE_FORMAT(achats.date_achat, "%d/%m/%Y") as date_fr FROM achats, clients WHERE achats.client = clients.id');
+		$achats = $this->db->query('SELECT achats.*, clients.nom_prenom as client_name, DATE_FORMAT(achats.date_achat, "%d/%m/%Y") as date_fr FROM achats, clients WHERE achats.client = clients.id AND clients.actif = 1');
+
+		return $achats;
+	}
+
+	function getAchatsClient($id)
+	{
+		$achats = $this->db->prepare('SELECT achats.*, clients.nom_prenom as client_name, DATE_FORMAT(achats.date_achat, "%d/%m/%Y") as date_fr FROM achats, clients WHERE achats.client = clients.id AND clients.id = ?');
+		$achats->execute([$id]);
 
 		return $achats;
 	}

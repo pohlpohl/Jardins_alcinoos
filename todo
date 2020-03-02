@@ -1,12 +1,8 @@
 Prix cash sur liste des achats
 
-Liste de tout les achats d'un client + somme des achats + moyenne des achats sur sa page client
-
 Somme totale et moyenne totale des achats sur le Tableau de bord
 
 Tri par famille dans liste des clients
-
-Possibilité d'ajouter des travailleurs sociaux
 
 Clic sur nom du client mène vers page du client sur liste des achats.
 
@@ -20,6 +16,8 @@ Trier la liste des achats par date descendente
 
 BUG : Désactivation de client ne mène nulle part, vérifier suppression de client. 
 BUG : Pb de redirection lors de la création d'utilisateurs
+
+Ajouter paiements en CB -> gestion dans la liste des achats.
 
 Vérifier unicité des identifiants des utilisateurs
 

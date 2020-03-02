@@ -13,13 +13,51 @@
 		Téléphone : <a href="tel:<?= $infos['telephone'] ?>"><?= $infos['telephone'] ?></a></p>
 </div>
 
+<div class="container">
+	<h4>Liste des achats</h4>
+	<div class="little_margin">
+		<table>
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Prix du panier</th>
+					<th>Prix payé</th>
+					<th>Prix en chèques</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php while ($data = $listeAchats->fetch()) : ?>
+					<tr>
+						<th><?= $data['date_fr'] ?></th>
+						<th><?= $data['prix'] ?></th>
+						<th><?= $data['montant'] ?></th>
+						<th><?= $data['montant_chq_service'] ?></th>
+						<th><a href="index.php?action=modify-achat-display&&id=<?= $data['id'] ?>">Modifier</a> | <a class="modal-trigger" href="#delete-modal">Supprimer</a></th>
+					</tr>
+					<!-- Modal Structure -->
+					<div id="delete-modal" class="modal">
+						<div class="modal-content">
+							<h4>Etes-vous sur de vouloir supprimer cet achat ?</h4>
+							<p>Cette action est irréversible.</p>
+						</div>
+						<div class="modal-footer">
+							<a href="index.php?action=delete-achat&&id=<?= $data['id'] ?>" class="modal-close waves-effect white-text red btn-flat">Supprimer</a>
+						</div>
+					</div>
+				<?php endwhile; ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+
 <!-- Modal Structure -->
 <div id="delete-modal" class="modal">
 	<div class="modal-content">
 		<h4>Attention</h4>
 		<p>Etes-vous sur de vouloir supprimer/désactiver ce client ?</p>
 		<p>
-			Si vous supprimez le compte, il sera définitivement inaccessible et sera supprimé de la base de données. 
+			Si vous supprimez le compte, il sera définitivement inaccessible et sera supprimé de la base de données.
 		</p>
 		<h6><u>Cette action est irréversible, n'utilisez cette option qu'en cas de création accidentelle de client !</u></h6>
 		<p>

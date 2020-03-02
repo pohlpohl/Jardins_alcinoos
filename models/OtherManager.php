@@ -56,4 +56,19 @@ class OtherManager extends Manager
 			return ($affectedLines);
 		}
 	}
+
+	function addSocialWorker($name, $phone, $email)
+	{
+		var_dump($name);
+		var_dump($phone);
+		var_dump($email);
+		$req = $this->db->prepare('INSERT INTO travailleurs_sociaux(nom_prenom, email, telephone) VALUES(?, ?, ?)');
+		$affectedLines = $req->execute([$name, $email, $phone]);
+
+		if ($affectedLines) {
+			return ($this->db->lastInsertId());
+		} else {
+			return ($affectedLines);
+		}
+	}
 }

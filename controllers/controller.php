@@ -73,6 +73,11 @@ function newClientDisplay()
 	require('views/new-client-display.php');
 }
 
+function newSocialWorkerDisplay()
+{
+	require('views/new-social-worker-display.php');
+}
+
 function addClient($firstName, $lastName, $placeID, $phone, $nbAdults, $nbChildren, $nbBabies, $socWorker)
 {
 	$clientsManager = new ClientsManager();
@@ -86,6 +91,20 @@ function addClient($firstName, $lastName, $placeID, $phone, $nbAdults, $nbChildr
 
 	if ($affectedLines) {
 		header('Location: index.php?action=achats-display');
+	} else {
+		throw new Exception("Error Processing Request");
+	}
+}
+
+function addSocialWorker($firstName, $lastName, $phone, $email)
+{
+	$otherManager = new OtherManager();
+
+	$name = strtoupper($lastName) . " " . ucfirst(strtolower($firstName));
+	$affectedLines = $otherManager->addSocialWorker($name, $phone, $email);
+
+	if ($affectedLines) {
+		header('Location: index.php?action=home');
 	} else {
 		throw new Exception("Error Processing Request");
 	}
@@ -114,6 +133,8 @@ function exportCsv()
 function listeClientsDisplay($mode, $id)
 {
 	$clientsManager = new ClientsManager();
+	$achatManager = new AchatManager();
+
 	switch ($mode) {
 		case 'all':
 			$listeClients = $clientsManager->getClients();
@@ -126,6 +147,7 @@ function listeClientsDisplay($mode, $id)
 				die();
 			}
 			$infos = $clientsManager->getInfo($id);
+			$listeAchats = $achatManager->getAchatsClient($id);
 			require('views/client-account-view.php');
 			break;
 		case 'ts':

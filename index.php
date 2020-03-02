@@ -43,6 +43,12 @@ try {
 					addClient(htmlspecialchars($_POST['client-first-name']), htmlspecialchars($_POST['client-last-name']), htmlspecialchars($_POST['place-selected']), htmlspecialchars($_POST['client-phone']), htmlspecialchars($_POST['client-adults']), htmlspecialchars($_POST['client-children']), htmlspecialchars($_POST['client-babies']), htmlspecialchars($_POST['social-worker']));
 				}
 				break;
+			case 'new-social-worker-display':
+				newSocialWorkerDisplay();
+				break;
+			case 'new-social-worker-add':
+				addSocialWorker($_POST['first-name'], $_POST['last-name'], $_POST['phone'], $_POST['email']);
+				break;
 			case 'export-csv':
 				exportCsv();
 				break;

@@ -1,5 +1,9 @@
 <?php require('views/header.php'); ?>
 
+<section class="action-buttons container center">
+	<a class="btn little_margin" href="index.php?action=new-client-display">Ajouter un nouveau client</a>
+</section>
+
 <div class="little_margin">
 	<table>
 		<thead>

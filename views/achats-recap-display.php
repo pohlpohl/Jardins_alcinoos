@@ -23,7 +23,7 @@
 		<tbody>
 			<?php while ($data = $listeAchats->fetch()) : ?>
 				<tr>
-					<th><a href="index.php?action=liste-clients&&select=place&&id=<?= $data['client'] ?>"><?= $data['client_name'] ?></a></th>
+					<th><a href="index.php?action=liste-clients&&select=client&&id=<?= $data['client'] ?>"><?= $data['client_name'] ?></a></th>
 					<th><?= $data['date_fr'] ?></th>
 					<th><?= $data['prix'] ?></th>
 					<th><?= $data['montant'] ?></th>

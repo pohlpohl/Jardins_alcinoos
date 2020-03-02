@@ -6,9 +6,10 @@
 
 <section class="action-buttons container center">
 	<?php if ($_SESSION['auth'] == 'admin') : ?>
-		<a class="btn" href="index.php?action=achats-display">Panneau d'achats</a>
-		<a class="btn" href="index.php?action=achats-recap&&select=<?= date('Y-m-d') ?>">Récapitulatif des achats du jour</a>
-		<a class="btn" href="index.php?action=achats-recap&&select=all">Tout les achats</a>
+		<a class="btn little_margin" href="index.php?action=achats-display">Nouvel achat</a>
+		<a class="btn little_margin" href="index.php?action=achats-recap&&select=<?= date('Y-m-d') ?>">Récapitulatif des achats du jour</a>
+		<a class="btn little_margin" href="index.php?action=achats-recap&&select=all">Tout les achats</a>
+		<a class="btn little_margin" href="index.php?action=new-social-worker-display&&select=all">Enregistrer un nouveau travailleur social</a>
 	<?php endif; ?>
 </section>
 

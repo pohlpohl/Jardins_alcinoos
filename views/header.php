@@ -19,9 +19,10 @@
 			<a href="index.php?action=home" class="brand-logo">Le jardin d'Alcinoos</a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li <?php echo (($_GET['action'] == 'home') ? "class=\"grey darken-1\"" : ''); ?>><a href="index.php?action=home">Tableau de bord</a></li>
-				<li <?php echo (($_GET['action'] == 'achats-display') ? "class=\"grey darken-1\"" : ''); ?>><a href="index.php?action=achats-display">Achats</a></li>
+				<li <?php echo (($_GET['action'] == 'achats-display') ? "class=\"grey darken-1\"" : ''); ?>><a href="index.php?action=achats-display">Nouvel Achat</a></li>
 				<?php if ($_SESSION['auth'] == 'admin'): ?>
 					<li <?php echo (($_GET['action'] == 'liste-clients') ? "class=\"grey darken-1\"" : ''); ?>><a href="index.php?action=liste-clients&&select=all">Liste des clients</a></li>
+					<li <?php echo (($_GET['action'] == 'achats-recap') ? "class=\"grey darken-1\"" : ''); ?>><a href="index.php?action=achats-recap&&select=all">Liste des achats</a></li>
 				<?php endif; ?>
 				<li><a href="#" class="dropdown-trigger" data-target='account-dropdown'>Compte</a></li>
 			</ul>
